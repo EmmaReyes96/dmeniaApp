@@ -1,0 +1,7 @@
+{
+  "name": "dmenia",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}

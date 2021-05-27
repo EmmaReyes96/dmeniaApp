@@ -1,0 +1,54 @@
+<app-header [title]='"Settings"' ></app-header>
+
+<ion-content>
+  <ion-grid fixed>
+    <form (ngSubmit)='Update(fUser)' #fUser='ngForm' >
+
+          <ion-row>
+            <ion-col>              
+                <ion-list>
+                  
+                  <ion-item>
+                    <ion-label>Email</ion-label>
+                    <ion-input 
+                      name="email" 
+                      type="email"
+                      required=""
+                      [(ngModel)]='User.email'
+                      pattern="^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$"
+                      required>
+                    </ion-input>
+                  </ion-item>
+
+                  <ion-item>
+                    <ion-label>name</ion-label>
+                    <ion-input 
+                      name="name" 
+                      type="name"
+                      required=""
+                      [(ngModel)]='User.name'
+                      required>
+                    </ion-input>
+                  </ion-item>
+
+                </ion-list>
+            </ion-col>
+          </ion-row>
+
+          <ion-row style="text-align-last: center;">
+            <ion-col>
+              <ion-button type="submit" color="tertiary" shape="round">
+                Update user
+              </ion-button>
+            </ion-col>
+            <ion-col>
+              <ion-button (click)="deleteUser()" color="danger" shape="round">
+                Delete user
+              </ion-button>
+            </ion-col>            
+          </ion-row>
+          
+
+    </form>
+  </ion-grid>
+</ion-content>
