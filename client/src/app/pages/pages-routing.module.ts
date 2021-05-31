@@ -24,6 +24,16 @@ const routes: Routes = [
         canActivate: [AuthGuard],
         loadChildren: () => import('./to-do/to-do.module').then( m => m.ToDoPageModule)
       },
+      {
+        path: 'request',
+        canActivate: [AuthGuard],
+        loadChildren: () => import('./request/request.module').then( m => m.RequestPageModule)
+      },
+      {
+        path: 'grid',
+        canActivate: [AuthGuard],
+        loadChildren: () => import('./grid/grid.module').then( m => m.GridPageModule)
+      }
     ]
   },
 ];

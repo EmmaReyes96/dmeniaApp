@@ -1,0 +1,56 @@
+<app-header [title]='"Request"' ></app-header>
+
+<ion-content>
+  <ion-grid fixed>
+
+    <ion-row class="center" >      
+      <ion-button  color='success' (click)="res200()">
+        <ion-icon  slot="start" name="checkmark-circle-outline"></ion-icon>
+        res200
+      </ion-button>
+    </ion-row>
+
+    <ion-row class="center" >
+      <ion-button color='success' (click)="res201()">
+        <ion-icon  slot="start" name="checkmark-circle-outline"></ion-icon>
+        res201
+      </ion-button>  
+    </ion-row>
+
+    <ion-row class="center" >
+      <ion-button color='tertiary tint' (click)="res301()">
+        <ion-icon slot="start" name="repeat-outline"></ion-icon>
+        res301
+      </ion-button>  
+    </ion-row>
+
+    <ion-row class="center" >
+      <ion-button color='warning' (click)="res400()">
+        <ion-icon slot="start" name="alert-circle-outline"></ion-icon>
+        res400
+      </ion-button>    
+    </ion-row>
+
+    <ion-row class="center" >
+      <ion-button color='warning' (click)="res404()">
+        <ion-icon slot="start" name="alert-circle-outline"></ion-icon>
+        res404
+      </ion-button>  
+    </ion-row>
+
+    <ion-row class="center" >
+      <ion-button color='warning' (click)="res418()">
+        <ion-icon slot="start" name="alert-circle-outline"></ion-icon>
+        res418
+      </ion-button>  
+    </ion-row>
+
+    <ion-row class="center" >
+      <ion-button color='danger' (click)="res500()">
+        <ion-icon slot="start" name="close-circle-outline"></ion-icon>
+        res500
+      </ion-button>  
+    </ion-row>
+
+  </ion-grid>
+</ion-content>  

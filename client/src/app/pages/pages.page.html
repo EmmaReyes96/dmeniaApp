@@ -20,14 +20,26 @@
             <ion-icon name="clipboard-outline"></ion-icon>
             &nbsp;
             <ion-label>To-Do</ion-label>
-          </ion-item>         
+          </ion-item>   
+          
+          <ion-item class="item1" routerLink='/home/request' >
+            <ion-icon name="alert-circle-outline"></ion-icon>
+            &nbsp;
+            <ion-label>Request</ion-label>
+          </ion-item>   
+
+          <ion-item class="item1" routerLink='/home/grid' >
+            <ion-icon name="grid-outline"></ion-icon>
+            &nbsp;
+            <ion-label>Grid</ion-label>
+          </ion-item>   
 
           <ion-item class="item1" routerLink (click)="signOut()" >
             <ion-icon name="log-out-outline" ></ion-icon>
             &nbsp;
             <ion-label>Sign Out</ion-label>
           </ion-item>     
-
+          
         </ion-menu-toggle>
       </ion-list>
     </ion-content>

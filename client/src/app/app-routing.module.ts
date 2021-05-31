@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 
-const routes: Routes = [ 
+const routes: Routes = [   
   {
     path: '',
     redirectTo: 'home',
@@ -15,6 +15,11 @@ const routes: Routes = [
     path: 'home',
     loadChildren: () => import('./pages/pages.module').then( m => m.PagesPageModule)
   },
+  {
+    path: '**',
+    redirectTo: 'home',
+    pathMatch: 'full'
+  }
   
 ];
 

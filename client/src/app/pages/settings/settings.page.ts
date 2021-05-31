@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { IonicFunctionsService } from 'src/app/services/ionic-functions.service';
+import { IonicAlertService } from 'src/app/services/ionic-alert.service';
 import { AuthService } from '../../services/auth.service';
 import { UserService } from '../../services/user.service';
 import { userModel } from '../../models/user.model';
@@ -24,7 +24,7 @@ export class SettingsPage implements OnInit {
 
   constructor(private AuthService: AuthService,
               private UserService: UserService,
-              private fIonic: IonicFunctionsService
+              private IonicAlert: IonicAlertService
               ) {}
 
   ngOnInit() {    
@@ -36,20 +36,37 @@ export class SettingsPage implements OnInit {
 
   Update(fUser){
     if(fUser.invalid){return;}    
-    this.UserService.UserUpdate(this.uid,this.User,this.token).subscribe( () => { this.fIonic.presentAlert('Congratulation', 'update user') } )
+    this.UserService.UserUpdate(this.uid,this.User,this.token)
+    .subscribe(
+      res => { 
+        this.IonicAlert.presentAlert('Congratulation', 'update user') 
+      }, 
+      err => {
+        const title = `${err.statusText}: ${err.status}`
+        const msg = `${err.error.msg}`
+        this.IonicAlert.presentAlert(title, msg)
+      }
+    )
   }
 
   deleteUser(){ 
     const title = 'Confirm!';
     const msg = 'sure you want to delete this account';
-    this.fIonic.presentAlertConfirm(title, msg).then(res => {
+    this.IonicAlert.presentAlertConfirm(title, msg).then(res => {
       if(res.data){
-        this.UserService.UserDelete(this.uid,this.token).subscribe(()=>{})
-        this.AuthService.signOut();
+        this.UserService.UserDelete(this.uid,this.token)
+        .subscribe( 
+          res => {
+          this.AuthService.signOut();
+          },
+          err => {
+            const title = `${err.statusText}: ${err.status}`
+            const msg = `${err.error.msg}`
+            this.IonicAlert.presentAlert(title, msg)
+          } 
+        )
       }
     })
-    
-    
   }
 
 }

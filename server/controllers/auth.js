@@ -11,7 +11,7 @@ module.exports.login = async (req, res) => {
         const userDB = await User.findOne({email});
         
         if(!userDB){
-            return res.status(400).json({
+            return res.status(404).json({
                 ok: false,
                 msg: 'account not exist'
             })
@@ -28,7 +28,7 @@ module.exports.login = async (req, res) => {
         
         const token = await generateJWT(userDB._id);
          
-        res.json({
+        res.status(200).json({
             ok: true,
             token,
             userDB
@@ -48,16 +48,35 @@ module.exports.login = async (req, res) => {
 module.exports.renewToken = async (req, res = response) => {
     
     const  uid = req.uid
-    const  userDB = await User.findById( uid );
 
-    // Generar el TOKEN - JWT
-    const token = await generateJWT( uid );
+    try {
+        const  userDB = await User.findById( uid );
 
-    res.json({
-        ok: true,
-        token,
-        userDB
-    });
+        if(!userDB){
+            return res.status(404).json({
+                ok: false,
+                msg: 'account not exist'
+            })
+        }
+
+        // Generar el TOKEN - JWT
+        const token = await generateJWT( uid );
+
+        res.status(200).json({
+            ok: true,
+            token,
+            userDB
+        });
+        
+    } catch (error) {
+
+        res.status(500).json({
+            ok: true,
+            token,
+            userDB
+        });
+        
+    }
 
 
 }

@@ -1,0 +1,21 @@
+version: '3' 
+
+services:
+  ionic: 
+    build:
+      context: ./client 
+      dockerfile: Dockerfile.prod
+    ports:
+      - "8100:80"
+
+  express:
+    build: server 
+    ports:
+      - "5000:5000"
+
+  database: 
+    image: mongo
+    ports:
+      - "27017:27017"
+    logging: 
+      driver: none

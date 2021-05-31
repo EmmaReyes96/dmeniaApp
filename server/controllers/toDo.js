@@ -8,13 +8,13 @@ module.exports.getToDo = async (req, res) => {
     try {
         
         if(!toDoDB){
-            return res.status(400).json({
+            return res.status(404).json({
                 ok:false,
                 msg: 'no to-do list'
             })
         };
 
-        res.json({
+        res.status(200).json({
             ok: true,
             toDoDB
         });
@@ -46,7 +46,7 @@ module.exports.postToDo = async (req, res) => {
 
         await newToDo.save();
 
-        res.json({
+        res.status(201).json({
             ok: true,
             newToDo
         })
@@ -73,7 +73,7 @@ module.exports.putToDo = async (req, res) => {
         const toDoDB = await ToDoModel.findById({_id});
 
         if(!toDoDB){
-            return res.status(400).json({
+            return res.status(404).json({
                 ok: false,
                 msg: 'to-do not exist'
             }) 
@@ -87,7 +87,7 @@ module.exports.putToDo = async (req, res) => {
 
         const UpdateToDo = await ToDoModel.findByIdAndUpdate(_id, toDo, { new: true });
 
-        res.json({
+        res.status(201).json({
             ok:true,
             UpdateToDo
         });
@@ -110,7 +110,7 @@ module.exports.deleteToDo = async (req, res) => {
         const toDoDB = await ToDoModel.findById(id);
 
         if(!toDoDB){
-            return res.status(400).json({
+            return res.status(404).json({
                 ok: false,
                 msg: 'to-do not exist'
             }) 
@@ -118,7 +118,7 @@ module.exports.deleteToDo = async (req, res) => {
 
         await ToDoModel.findByIdAndDelete(id);
 
-        res.json({
+        res.status(200).json({
             ok: true,
             msg: 'toDo deleted successfully'
         })

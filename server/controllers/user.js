@@ -12,13 +12,13 @@ module.exports.getUsers = async (req, res) => {
         const usersDB = await User.find()
 
         if(!usersDB){
-            return res.status(400).json({
+            return res.status(404).json({
                 ok: false,
                 msg: 'I have not registered any account'
             })
         }
 
-        res.json({
+        res.status(200).json({
             ok: true,
             usersDB
         })       
@@ -41,12 +41,12 @@ module.exports.getUser = async (req, res) => {
         const userDB = await User.findById(uid)
 
         if(!userDB){
-            return res.status(400).json({
+            return res.status(404).json({
                 ok: false,
                 msg: 'I have not registered any account'
             })
         }
-        res.json({
+        res.status(200).json({
             ok: true,
             userDB
         })       
@@ -69,7 +69,7 @@ module.exports.postUser = async(req, res = response) => {
     const userExist = await User.findOne({email})
 
     if( userExist ){
-        return res.status(400).json({
+        return res.status(404).json({
             ok: false,
             msg: 'error: email exist'
         })
@@ -83,7 +83,7 @@ module.exports.postUser = async(req, res = response) => {
 
         const token = await generateJWT(newUser.id)
 
-        res.json({
+        res.status(200).json({
             ok: true,
             msg: 'Congratulation: user created!',
             newUser,
@@ -109,7 +109,7 @@ module.exports.putUser = async (req, res) => {
         const userDB = await User.findById(uid)
 
         if(!userDB){
-            return res.status(400).json({
+            return res.status(404).json({
                 ok: false,
                 msg: 'user not exist in DB'
             })
@@ -120,7 +120,7 @@ module.exports.putUser = async (req, res) => {
         if(userDB.email != email){
             const userExist = await User.findOne({email})
             if(userExist){
-                return res.status(400).json({
+                return res.status(404).json({
                     ok:false,
                     mag: 'email exist'
                 })
@@ -130,7 +130,7 @@ module.exports.putUser = async (req, res) => {
         fields.email = email;
         const UpdateUser = await User.findByIdAndUpdate(uid, fields, { new: true })
 
-        res.json({
+        res.status(201).json({
             ok:true,
             UpdateUser
         })
@@ -154,7 +154,7 @@ module.exports.deleteUser = async (req, res) => {
         const userDB = await User.findById(uid);
 
         if(!userDB){
-            return res.status(400).json({
+            return res.status(404).json({
                 ok: false,
                 msg: 'user not exist in DB'
             })
@@ -163,7 +163,7 @@ module.exports.deleteUser = async (req, res) => {
         await User.findByIdAndDelete(uid)
         await ToDoModel.collection.remove({uid})
 
-        res.json({
+        res.status(200).json({
             ok: true,
             msg: 'User deleted successfully'
         })

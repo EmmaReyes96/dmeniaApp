@@ -6,7 +6,8 @@ import { Storage } from '@ionic/storage';
 import { User, userModel } from '../models/user.model';
 import { Router } from '@angular/router';
 import { SERVER_URL } from '../../environments/environment';
-import { IonicFunctionsService } from './ionic-functions.service';
+import { IonicAlertService } from './ionic-alert.service';
+import { Observable } from 'rxjs';
 
 
 @Injectable({
@@ -25,46 +26,21 @@ export class AuthService {
     private http: HttpClient,
     private storage: Storage,
     private router: Router,
-    private fIonic: IonicFunctionsService
+    private IonicAlert: IonicAlertService
     ) 
     {
        this.storage.create();
     }
 
-  Login(loginUser:{email: string, password: string}) {
+  Login(loginUser:{email: string, password: string}): Observable<User> {
     const url = `${SERVER_URL}/api/login`
-    this.http.post<User>( url, loginUser ).subscribe( resp => {
-      if(resp.ok){
-        this.SaveToken(resp.token).then(res => {
-          this.router.navigateByUrl('/home')
-        }).catch(err => {
-          console.log(err);
-        })
-        
-      }
-    }, err => {
-        this.token = null;
-        this.storage.clear();
-        this.fIonic.presentAlert('Alert', err['error'].msg)
-    })   
+    return this.http.post<User>( url, loginUser )
   } 
 
-  Register(registerUser:{email: string, password: string, name: string}){
+  Register(registerUser:{email: string, password: string, name: string}): Observable<User>{
     const url = `${SERVER_URL}/api/createUser`
-    this.http.post<User>( url, registerUser )
-      .subscribe( resp => {
-        if(resp.ok){
-          this.SaveToken(resp.token).then(res => {
-            this.router.navigateByUrl('/home')
-          }).catch(err => {
-            console.log(err);
-          })
-        }
-      }, err => {
-          this.token = null;
-          this.storage.clear();
-          this.fIonic.presentAlert( 'Alert' ,err['error'].msg)
-      })
+    return this.http.post<User>( url, registerUser )
+      
   }
 
   async TokenValidate(): Promise<boolean>{
@@ -75,21 +51,23 @@ export class AuthService {
       return Promise.resolve(false);
     }
 
-    return new Promise<boolean>( res => {
+    return new Promise<boolean>( resolve => {
       const url = `${SERVER_URL}/api/login/renew`
       this.http.get<User>(url , {
         headers: {
           'x-token': this.token
         }
-      }).subscribe(resp => {
-        if(resp.ok) {
-          const {email, name, password, _id} = resp.userDB
+      }).subscribe( 
+        res => {
+          const {email, name, password, _id} = res.userDB
           this.userModel = new userModel( email, name, password, _id)
-          this.SaveToken(resp.token);
-          res(true)
-        }else{
-          res(false)
-        }
+          this.SaveToken(res.token);
+          resolve(true)
+      }, rej => {
+          const title = `${rej.statusText}: ${rej.status}`
+          const msg = `${rej.error.msg}`
+          this.IonicAlert.presentAlert(title, msg)
+          resolve(false)
       })
     })
   }
