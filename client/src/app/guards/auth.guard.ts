@@ -13,12 +13,13 @@ constructor(
   ){}
 
   async canActivate():Promise<boolean>{
-    return this.AuthService.TokenValidate().then(res => {
-      if(!res){
-        this.router.navigateByUrl('/login')
-        return res
-      }
+    return this.AuthService.TokenValidate()
+    .then( res => {      
       return res
+    })
+    .catch( rej =>{
+        this.router.navigateByUrl('/login')
+        return rej
     })
   }
 }

@@ -48,10 +48,10 @@ export class AuthService {
     await this.tokenStorage();
 
     if(!this.token){
-      return Promise.resolve(false);
+      return Promise.reject(false);
     }
 
-    return new Promise<boolean>( resolve => {
+    return new Promise<boolean>( (resolve, reject) => {
       const url = `${SERVER_URL}/api/login/renew`
       this.http.get<User>(url , {
         headers: {
@@ -67,7 +67,7 @@ export class AuthService {
           const title = `${rej.statusText}: ${rej.status}`
           const msg = `${rej.error.msg}`
           this.IonicAlert.presentAlert(title, msg)
-          resolve(false)
+          reject(false)
       })
     })
   }

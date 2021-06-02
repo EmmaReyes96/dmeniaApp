@@ -56,13 +56,7 @@ router.delete('/deleteToDo/:id', validateJWT, toDo.deleteToDo);
 
 // ------------- request ---------------------
 
-router.get('/res200', request.res200)
-router.get('/res201', request.res201)
-router.get('/res301', request.res301)
-router.get('/res400', request.res400)
-router.get('/res404', request.res404)
-router.get('/res418', request.res418)
-router.get('/res500', request.res500)
+router.get('/res/:code', request.res)
 
 
 module.exports = router;
